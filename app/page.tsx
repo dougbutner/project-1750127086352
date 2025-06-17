@@ -1,19 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ExternalUser, setSettings, SdkError, SdkErrors } from '@tonomy/tonomy-id-sdk';
-
-// Configure network settings
-setSettings({
-    ssoWebsiteOrigin: 'https://accounts.testnet.tonomy.io',
-    blockchainUrl: 'https://blockchain-api-testnet.tonomy.io',
-});
+import { ExternalUser, SdkError, SdkErrors } from '@tonomy/tonomy-id-sdk';
+import { initializeTonomySDK } from '@/lib/tonomy';
 
 // Define user type to fix type errors
 export interface User {
     id: string;
     name: string;
-    username?: string;
 }
 
 export default function Page() {
@@ -21,11 +15,25 @@ export default function Page() {
     const [currentPage, setCurrentPage] = useState('home');
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(false);
+    const [isClient, setIsClient] = useState(false);
+
+    // Ensure we're on the client side
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     useEffect(() => {
+        if (!isClient) return;
+
+        // Initialize SDK
+        initializeTonomySDK();
+
         // Check if user is already logged in
         const checkSession = async () => {
             try {
+                // Add a small delay to ensure SDK is properly initialized
+                await new Promise((resolve) => setTimeout(resolve, 500));
+
                 const user = await ExternalUser.getUser();
                 if (user) {
                     // Get the account name using the method and convert to string
@@ -49,9 +57,11 @@ export default function Page() {
             }
         };
         checkSession();
-    }, []);
+    }, [isClient]);
 
     const handleTonomyLogin = async () => {
+        if (!isClient) return;
+
         setLoading(true);
         try {
             const dataRequest = { username: true };
@@ -66,6 +76,8 @@ export default function Page() {
     };
 
     const handleLogout = async () => {
+        if (!isClient) return;
+
         try {
             const user = await ExternalUser.getUser();
             if (user) {
@@ -78,6 +90,11 @@ export default function Page() {
             console.error('Logout failed:', error);
         }
     };
+
+    // Don't render anything until we're on the client side
+    if (!isClient) {
+        return null;
+    }
 
     // --- Navigation --- //
     const renderPage = () => {
