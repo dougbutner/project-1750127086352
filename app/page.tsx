@@ -10,12 +10,39 @@ export interface User {
     name: string;
 }
 
+// Define Tonomy window interface
+declare global {
+    interface Window {
+        tonomy: {
+            contracts: {
+                invite: {
+                    cxc: {
+                        actions: {
+                            redeeminvite: (params: {
+                                user: string;
+                                inviter: string;
+                            }) => Promise<any>;
+                            claimreward: (params: { user: string }) => Promise<any>;
+                        };
+                    };
+                };
+            };
+        };
+    }
+}
+
 export default function Page() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [currentPage, setCurrentPage] = useState('home');
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(false);
     const [isClient, setIsClient] = useState(false);
+
+    // Add invite page state
+    const [inviter, setInviter] = useState('');
+    const [inviteLoading, setInviteLoading] = useState(false);
+    const [inviteError, setInviteError] = useState('');
+    const [inviteSuccess, setInviteSuccess] = useState('');
 
     // Ensure we're on the client side
     useEffect(() => {
@@ -89,6 +116,51 @@ export default function Page() {
         } catch (error) {
             console.error('Logout failed:', error);
         }
+    };
+
+    const handleRedeemInvite = async () => {
+        if (!inviter) {
+            setInviteError('Please enter an inviter account');
+            return;
+        }
+        if (!user?.id) {
+            setInviteError('Please log in first');
+            return;
+        }
+        setInviteLoading(true);
+        setInviteError('');
+        setInviteSuccess('');
+        try {
+            // Call the contract action
+            const result = await window.tonomy.contracts.invite.cxc.actions.redeeminvite({
+                user: user.id,
+                inviter: inviter,
+            });
+            setInviteSuccess('Successfully redeemed invite!');
+        } catch (err: any) {
+            setInviteError(err.message || 'Failed to redeem invite');
+        }
+        setInviteLoading(false);
+    };
+
+    const handleClaimReward = async () => {
+        if (!user?.id) {
+            setInviteError('Please log in first');
+            return;
+        }
+        setInviteLoading(true);
+        setInviteError('');
+        setInviteSuccess('');
+        try {
+            // Call the contract action
+            const result = await window.tonomy.contracts.invite.cxc.actions.claimreward({
+                user: user.id,
+            });
+            setInviteSuccess('Successfully claimed reward!');
+        } catch (err: any) {
+            setInviteError(err.message || 'Failed to claim reward');
+        }
+        setInviteLoading(false);
     };
 
     // Don't render anything until we're on the client side
@@ -212,26 +284,87 @@ export default function Page() {
 
     // --- Invite Page --- //
     const renderInvite = () => (
-        <div className="min-h-screen bg-black text-white p-6" data-oid="yd4mp28">
-            <div className="max-w-4xl mx-auto" data-oid="i83p10f">
+        <div className="min-h-screen bg-black text-white p-6" data-oid="iywtv4k">
+            <div className="max-w-4xl mx-auto" data-oid="ua_e6ul">
                 <h2
                     className="text-3xl md:text-4xl font-semibold tracking-tight mb-8"
-                    data-oid="-mxpj9f"
+                    data-oid="bkk5ikj"
                 >
                     Invite System
                 </h2>
+
+                {/* Redeem Invite Section */}
+                <div
+                    className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 mb-8"
+                    data-oid="rm3_vh6"
+                >
+                    <h3 className="text-xl font-semibold mb-4 tracking-tight" data-oid="5h3l4bs">
+                        Redeem Invite
+                    </h3>
+                    <p className="text-gray-400 mb-6" data-oid="jzv_k3_">
+                        Enter the account name of the person who invited you to join.
+                    </p>
+
+                    <div className="space-y-4" data-oid=".d0.lx8">
+                        <input
+                            type="text"
+                            value={inviter}
+                            onChange={(e) => setInviter(e.target.value)}
+                            placeholder="Enter inviter account name"
+                            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-white/20"
+                            data-oid="2.wqrhn"
+                        />
+
+                        <button
+                            onClick={handleRedeemInvite}
+                            disabled={inviteLoading}
+                            className="w-full bg-white text-black px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            data-oid="_m-ml3s"
+                        >
+                            {inviteLoading ? 'Processing...' : 'Redeem Invite'}
+                        </button>
+                    </div>
+                </div>
+
+                {/* Claim Reward Section */}
                 <div
                     className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8"
-                    data-oid="3j7spua"
+                    data-oid="uflr3r_"
                 >
+                    <h3 className="text-xl font-semibold mb-4 tracking-tight" data-oid="0ceqybn">
+                        Claim Reward
+                    </h3>
+                    <p className="text-gray-400 mb-6" data-oid="3-v5gs2">
+                        Claim your rewards for successful invites.
+                    </p>
+
                     <button
-                        onClick={() => console.log('Smart contract: createInvite')}
-                        className="bg-white text-black px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition-all"
-                        data-oid="5zb51ug"
+                        onClick={handleClaimReward}
+                        disabled={inviteLoading}
+                        className="w-full bg-white text-black px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        data-oid="cwtdqmz"
                     >
-                        Create Invite
+                        {inviteLoading ? 'Processing...' : 'Claim Reward'}
                     </button>
                 </div>
+
+                {/* Status Messages */}
+                {inviteError && (
+                    <div
+                        className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400"
+                        data-oid="5n9fxan"
+                    >
+                        {inviteError}
+                    </div>
+                )}
+                {inviteSuccess && (
+                    <div
+                        className="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400"
+                        data-oid="19c8lv4"
+                    >
+                        {inviteSuccess}
+                    </div>
+                )}
             </div>
         </div>
     );
