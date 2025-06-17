@@ -115,30 +115,42 @@ export default function Page() {
     // --- Landing Page --- //
     const renderLanding = () => (
         <div
-            className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white"
-            data-oid="mi6ue5v"
+            className="min-h-screen bg-black text-white relative overflow-hidden"
+            data-oid="o0fcycd"
         >
-            <div className="container mx-auto px-4 py-8" data-oid="s7xf524">
-                <h1 className="text-4xl font-bold mb-6 text-center" data-oid="4_5adqe">
-                    Tonomy Portal
+            <div className="relative z-10 container mx-auto px-6 py-8" data-oid="o7q2.1v">
+                <h1
+                    className="text-5xl md:text-7xl font-medium tracking-tighter font-jakarta text-center mb-6"
+                    data-oid="kku-vhl"
+                >
+                    Welcome to{' '}
+                    <span
+                        className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400"
+                        data-oid="p7iw3ry"
+                    >
+                        Tonomy Portal
+                    </span>
                 </h1>
                 <div
-                    className="max-w-md mx-auto bg-gray-700 p-6 rounded-lg shadow-md"
-                    data-oid="u1pxxy"
+                    className="max-w-md mx-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8"
+                    data-oid="zp.h_42"
                 >
-                    <h2 className="text-2xl font-semibold mb-4 text-center" data-oid="u1pxxz">
+                    <h2
+                        className="text-2xl font-semibold mb-4 text-center tracking-tight"
+                        data-oid="n:y3xtq"
+                    >
                         Login with Tonomy ID
                     </h2>
-                    <div className="mt-6 text-center" data-oid="u1pxxzj">
-                        <p className="text-sm text-gray-400" data-oid="4_5adqf">
+                    <div className="mt-6 text-center" data-oid="3.cee32">
+                        <p className="text-gray-400" data-oid="9lsnw6d">
                             Access the cXc.world invite program and token bridge
                         </p>
                     </div>
                     <button
                         onClick={handleTonomyLogin}
                         disabled={loading}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-                        data-oid="u1pxxza"
+                        className="w-full mt-8 bg-white text-black px-6 py-3 rounded-md font-medium hover:bg-gray-100 active:scale-95 transition-all"
+                        data-oid="kvw:8g5"
                     >
                         {loading ? 'Logging in...' : 'Login with Tonomy ID'}
                     </button>
@@ -149,12 +161,15 @@ export default function Page() {
 
     // --- Dashboard --- //
     const renderDashboard = () => (
-        <div className="min-h-screen bg-gray-900 text-white" data-oid="zk442y_">
-            <div className="max-w-6xl mx-auto p-6" data-oid="76y59x6">
-                <h2 className="text-2xl font-bold mb-8" data-oid="wedya41">
+        <div className="min-h-screen bg-black text-white" data-oid="fs..3w9">
+            <div className="max-w-6xl mx-auto p-6" data-oid="x13t1pp">
+                <h2
+                    className="text-3xl md:text-4xl font-semibold tracking-tight mb-8"
+                    data-oid="1jixlkg"
+                >
                     Welcome back, {user?.name}
                 </h2>
-                <div className="grid md:grid-cols-3 gap-6" data-oid="td5p:1r">
+                <div className="grid md:grid-cols-3 gap-8" data-oid="t9l-:_d">
                     {[
                         {
                             name: 'Invite',
@@ -173,16 +188,19 @@ export default function Page() {
                         <div
                             key={item.page}
                             onClick={() => setCurrentPage(item.page)}
-                            className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50 hover:border-purple-500/50 cursor-pointer transition-all duration-300 hover:transform hover:scale-105"
-                            data-oid="yc2onwh"
+                            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:border-white/20 transition-all cursor-pointer"
+                            data-oid="65t.b9t"
                         >
-                            <div className="text-3xl mb-4" data-oid="2.tc7te">
+                            <div className="text-3xl mb-4" data-oid="p0ss1qa">
                                 {item.icon}
                             </div>
-                            <h3 className="text-xl font-semibold mb-2" data-oid="4j3k36e">
+                            <h3
+                                className="text-xl font-semibold mb-3 tracking-tight"
+                                data-oid="mkgg1.u"
+                            >
                                 {item.name}
                             </h3>
-                            <p className="text-gray-400" data-oid="-mwt679">
+                            <p className="text-gray-400" data-oid="e-j45p0">
                                 {item.desc}
                             </p>
                         </div>
@@ -194,19 +212,22 @@ export default function Page() {
 
     // --- Invite Page --- //
     const renderInvite = () => (
-        <div className="min-h-screen bg-gray-900 text-white p-6" data-oid="w.e6hsv">
-            <div className="max-w-4xl mx-auto" data-oid="gf16juf">
-                <h2 className="text-3xl font-bold mb-8" data-oid="r5g9g5j">
+        <div className="min-h-screen bg-black text-white p-6" data-oid="yd4mp28">
+            <div className="max-w-4xl mx-auto" data-oid="i83p10f">
+                <h2
+                    className="text-3xl md:text-4xl font-semibold tracking-tight mb-8"
+                    data-oid="-mxpj9f"
+                >
                     Invite System
                 </h2>
                 <div
-                    className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50"
-                    data-oid="3wxv.19"
+                    className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8"
+                    data-oid="3j7spua"
                 >
                     <button
                         onClick={() => console.log('Smart contract: createInvite')}
-                        className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold transition-colors"
-                        data-oid="qo2d6dw"
+                        className="bg-white text-black px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition-all"
+                        data-oid="5zb51ug"
                     >
                         Create Invite
                     </button>
@@ -217,19 +238,22 @@ export default function Page() {
 
     // --- Bridge Page --- //
     const renderBridge = () => (
-        <div className="min-h-screen bg-gray-900 text-white p-6" data-oid="cy.h_z4">
-            <div className="max-w-4xl mx-auto" data-oid="e2nxpw4">
-                <h2 className="text-3xl font-bold mb-8" data-oid="lcadinc">
+        <div className="min-h-screen bg-black text-white p-6" data-oid="5x4n5yd">
+            <div className="max-w-4xl mx-auto" data-oid="u3oq1zr">
+                <h2
+                    className="text-3xl md:text-4xl font-semibold tracking-tight mb-8"
+                    data-oid="f4tgibg"
+                >
                     Asset Bridge
                 </h2>
                 <div
-                    className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50"
-                    data-oid="khnh-un"
+                    className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8"
+                    data-oid="h9eqnx1"
                 >
                     <button
                         onClick={() => console.log('Smart contract: bridgeAssets')}
-                        className="bg-violet-600 hover:bg-violet-700 px-6 py-3 rounded-lg font-semibold transition-colors"
-                        data-oid="3jzr0:6"
+                        className="bg-white text-black px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition-all"
+                        data-oid="w_wro.6"
                     >
                         Bridge Assets
                     </button>
@@ -240,16 +264,19 @@ export default function Page() {
 
     // --- Learn Page --- //
     const renderLearn = () => (
-        <div className="min-h-screen bg-gray-900 text-white p-6" data-oid="wi7fht7">
-            <div className="max-w-4xl mx-auto" data-oid="e6d5q9:">
-                <h2 className="text-3xl font-bold mb-8" data-oid="_3q89mc">
+        <div className="min-h-screen bg-black text-white p-6" data-oid="e0zn-2l">
+            <div className="max-w-4xl mx-auto" data-oid="zy.0l:d">
+                <h2
+                    className="text-3xl md:text-4xl font-semibold tracking-tight mb-8"
+                    data-oid="082pdhh"
+                >
                     Learn
                 </h2>
                 <div
-                    className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50"
-                    data-oid="y3s3-2c"
+                    className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8"
+                    data-oid="aak1hfo"
                 >
-                    <p className="text-gray-300" data-oid="cv902wn">
+                    <p className="text-gray-300" data-oid="u:7zpnh">
                         Educational content about Tonomy blockchain
                     </p>
                 </div>
@@ -260,44 +287,44 @@ export default function Page() {
     // --- Navigation Bar --- //
     const NavBar = () => (
         <nav
-            className="bg-gray-800/80 backdrop-blur-lg border-b border-gray-700/50 p-4"
-            data-oid="i4qg-ar"
+            className="bg-black/80 backdrop-blur-lg border-b border-white/10 p-4"
+            data-oid="szjz.2b"
         >
-            <div className="max-w-6xl mx-auto flex justify-between items-center" data-oid=".:adpz8">
-                <div className="flex space-x-6" data-oid="_6m2-k_">
+            <div className="max-w-6xl mx-auto flex justify-between items-center" data-oid="b.jgwn9">
+                <div className="flex space-x-8" data-oid="g8aabg3">
                     <button
                         onClick={() => setCurrentPage('home')}
-                        className="text-white hover:text-purple-400 transition-colors"
-                        data-oid="ddibm:b"
+                        className="text-gray-300 hover:text-white transition-colors"
+                        data-oid="_znas2c"
                     >
                         Dashboard
                     </button>
                     <button
                         onClick={() => setCurrentPage('invite')}
-                        className="text-white hover:text-purple-400 transition-colors"
-                        data-oid="354wcw7"
+                        className="text-gray-300 hover:text-white transition-colors"
+                        data-oid="2:32:e7"
                     >
                         Invite
                     </button>
                     <button
                         onClick={() => setCurrentPage('bridge')}
-                        className="text-white hover:text-purple-400 transition-colors"
-                        data-oid="zpq1r:j"
+                        className="text-gray-300 hover:text-white transition-colors"
+                        data-oid="k_mc.f5"
                     >
                         Bridge
                     </button>
                     <button
                         onClick={() => setCurrentPage('learn')}
-                        className="text-white hover:text-purple-400 transition-colors"
-                        data-oid="f:vu9-o"
+                        className="text-gray-300 hover:text-white transition-colors"
+                        data-oid="8-9jvkg"
                     >
                         Learn
                     </button>
                 </div>
                 <button
                     onClick={handleLogout}
-                    className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm transition-colors"
-                    data-oid="z.kcc5u"
+                    className="bg-white text-black px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-all"
+                    data-oid="c6zc41o"
                 >
                     Logout
                 </button>
