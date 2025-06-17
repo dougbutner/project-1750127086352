@@ -1,13 +1,19 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-// @ts-ignore - Temporary ignore for missing type declarations
-import * as TonomyID from '@tonomy/tonomy-id-sdk';
+import { ExternalUser, setSettings, SdkError, SdkErrors } from '@tonomy/tonomy-id-sdk';
+
+// Configure network settings
+setSettings({
+    ssoWebsiteOrigin: 'https://accounts.testnet.tonomy.io',
+    blockchainUrl: 'https://blockchain-api-testnet.tonomy.io',
+});
 
 // Define user type to fix type errors
 export interface User {
     id: string;
     name: string;
+    username?: string;
 }
 
 export default function Page() {
@@ -17,39 +23,60 @@ export default function Page() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        // Check if user is already logged in or if there is a callback from Tonomy ID
-        const checkLogin = async () => {
+        // Check if user is already logged in
+        const checkSession = async () => {
             try {
-                // Simulated check for user data - replace with actual SDK call when API is clear
-                const userData = { accountName: 'user123', name: 'Tonomy User' };
-                if (userData) {
-                    setUser({ id: userData.accountName, name: userData.accountName });
+                const user = await ExternalUser.getUser();
+                if (user) {
+                    // Get the account name using the method and convert to string
+                    const accountName = (await user.getAccountName())?.toString() || 'Anonymous';
+                    setUser({ id: accountName, name: accountName });
                     setIsLoggedIn(true);
                 }
-            } catch (error) {
-                console.error('Error checking login status:', error);
+            } catch (e) {
+                if (e instanceof SdkError) {
+                    switch (e.code) {
+                        case SdkErrors.AccountNotFound:
+                        case SdkErrors.UserNotLoggedIn:
+                            console.log('User not logged in');
+                            break;
+                        default:
+                            console.error('Unexpected error:', e);
+                    }
+                } else {
+                    console.error('Error fetching user:', e);
+                }
             }
         };
-        checkLogin();
+        checkSession();
     }, []);
 
     const handleTonomyLogin = async () => {
         setLoading(true);
         try {
-            // Redirect to Tonomy ID for authentication
-            window.location.href = `https://accounts.tonomy.io?callback=${encodeURIComponent(window.location.href)}&appName=cXc.world&appUsername=cXc&appOriginUrl=https://music.cxc.world&appLogoUrl=${encodeURIComponent('https://ipfs.neftyblocks.io/ipfs/QmYzu7Dz7LqZP3jq4zmt84rpmjWm2AfhH1SF4Et5LbxVJy')}`;
-            // The actual redirection happens, so the following lines won't execute until callback
-            setLoading(false);
+            const dataRequest = { username: true };
+            await ExternalUser.loginWithTonomy({
+                callbackPath: '/callback',
+                dataRequest,
+            });
         } catch (error) {
             console.error('Login failed:', error);
             setLoading(false);
         }
     };
 
-    const handleLogout = () => {
-        setUser(null);
-        setIsLoggedIn(false);
-        setCurrentPage('home');
+    const handleLogout = async () => {
+        try {
+            const user = await ExternalUser.getUser();
+            if (user) {
+                await user.logout();
+            }
+            setUser(null);
+            setIsLoggedIn(false);
+            setCurrentPage('home');
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
     };
 
     // --- Navigation --- //
